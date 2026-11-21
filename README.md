@@ -3,6 +3,11 @@
 </p>
 
 <p align="center">
+  <a href="https://ai-collab-whiteboard.vercel.app"><img alt="Live demo" src="https://img.shields.io/badge/%F0%9F%9A%80%20Live%20demo-Open%20app-ff2d95?style=for-the-badge"></a>
+  <br/><a href="https://ai-collab-whiteboard.vercel.app">ai-collab-whiteboard.vercel.app</a>
+</p>
+
+<p align="center">
   <a href="https://nextjs.org"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs&logoColor=white"></a>
   <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white"></a>
   <a href="https://tailwindcss.com"><img alt="Tailwind CSS v4" src="https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white"></a>
