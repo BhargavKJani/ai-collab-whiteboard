@@ -1,0 +1,53 @@
+{
+  "name": "ai-collab-whiteboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n web,ws -c cyan,magenta \"next dev\" \"npm:ws\"",
+    "dev:web": "next dev",
+    "ws": "node server/ws.mjs",
+    "build": "next build",
+    "start": "concurrently -k -n web,ws \"next start\" \"npm:ws\"",
+    "start:web": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "docs:capture": "node scripts/capture.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "framer-motion": "^14.14.0",
+    "lib0": "^0.2.120",
+    "lucide-react": "^1.77.0",
+    "nanoid": "^6.0.2",
+    "next": "16.4.6",
+    "perfect-freehand": "^1.2.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "ws": "^8.23.0",
+    "y-indexeddb": "^9.0.12",
+    "y-protocols": "^1.0.7",
+    "y-websocket": "^3.1.0",
+    "yjs": "^13.6.33"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^24.19.2",
+    "@types/pngjs": "^6.0.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^10.0.7",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "gifenc": "^1.0.3",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5",
+    "vitest": "^5.1.1"
+  },
+  "description": "Real-time multiplayer AI whiteboard for dev teams and classrooms (Next.js + Yjs + Claude).",
+  "license": "MIT"
+}

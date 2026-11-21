@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070a16"/>
+      <stop offset="1" stop-color="#120a2a"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" x2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#f472b6"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.15" cy="0" r="0.6">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.9" cy="1" r="0.6">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#94a3b8" fill-opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="320" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="320" rx="24" fill="url(#dots)"/>
+  <rect width="1280" height="320" rx="24" fill="url(#glow1)"/>
+  <rect width="1280" height="320" rx="24" fill="url(#glow2)"/>
+  <text x="72" y="128" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#ffffff">Collab Board</text>
+  <text x="72" y="186" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="url(#neon)">The AI whiteboard that cleans up after you</text>
+  <text x="72" y="236" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#94a3b8">Live cursors · AI Tidy · Sketch → UI code · Brainstorm · for dev teams &amp; classrooms</text>
+  <g transform="translate(860 64)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 30 C 12 12, 120 8, 130 20 C 142 34, 138 80, 126 90 C 96 98, 22 100, 12 88 C 2 72, 4 44, 10 30" stroke="#e2e8f0" stroke-width="3" opacity="0.45"/>
+    <rect x="170" y="14" width="140" height="80" rx="12" stroke="#22d3ee" stroke-width="3"/>
+    <path d="M136 54 L 160 54 M150 46 L160 54 L150 62" stroke="#e2e8f0" stroke-width="2.5"/>
+    <rect x="40" y="130" width="110" height="70" rx="6" fill="#fde68a" stroke="none"/>
+    <rect x="170" y="130" width="110" height="70" rx="6" fill="#a5f3fc" stroke="none"/>
+    <rect x="300" y="130" width="60" height="70" rx="6" fill="#fbcfe8" stroke="none"/>
+    <path d="M250 220 L265 227 L258 229 L255 236 Z" fill="#f472b6" stroke="#0b1020"/>
+  </g>
+</svg>
