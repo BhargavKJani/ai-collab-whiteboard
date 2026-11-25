@@ -2,6 +2,7 @@
 
 import { FileJson, ImageDown, Lightbulb, Loader2, Sparkles, Upload, Wand2, Trash2, ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
+import { AccountButton } from "../AccountButton";
 
 export type AiAction = "tidy" | "sketch" | "brainstorm";
 
@@ -51,6 +52,9 @@ export function AiPanel(props: {
 
       {open && (
         <div className="mt-3 space-y-2 animate-fade-in">
+          <div className="flex justify-end empty:hidden">
+            <AccountButton />
+          </div>
           <ActionButton
             testId="ai-tidy"
             icon={<Wand2 size={16} />}

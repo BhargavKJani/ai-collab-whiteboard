@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { StartBoardButton } from "./StartBoardButton";
+import { AccountButton } from "../AccountButton";
 
 export function Nav() {
   return (
@@ -15,7 +16,8 @@ export function Nav() {
           <Link href="/#use-cases" className="hover:text-white">Teams & classrooms</Link>
           <Link href="/pricing" className="hover:text-white">Pricing</Link>
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-3">
+          <AccountButton />
           <StartBoardButton label="Open a board" size="sm" />
         </div>
       </nav>

@@ -5,9 +5,9 @@ export const metadata = { title: "Pricing — Collab Board" };
 
 const FAQ = [
   ["What counts as an AI action?", "One AI Tidy, one Sketch → UI generation or one Brainstorm run. Drawing, sharing and exporting are always free."],
-  ["Do students need accounts?", "No. Anyone with the board link can join. Team plans add private rooms when you need them."],
+  ["Do students need accounts?", "No. Anyone with the board link can join and draw. Only AI actions need a Google sign-in."],
   ["Can I self-host?", "Yes — the MVP is MIT-licensed. Run the Next.js app plus the tiny y-websocket server and bring your own Claude API key."],
-  ["Is there an education discount?", "Schools and universities get 50% off the Team plan."],
+  ["Do paid plans renew automatically?", "No. You pay once by UPI and the plan ends on its own, so there is nothing to cancel."],
 ];
 
 export default function PricingPage() {

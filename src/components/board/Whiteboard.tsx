@@ -29,6 +29,9 @@ import { CodePreviewModal } from "./CodePreviewModal";
 import { ElementView } from "./ElementView";
 import { TOOL_KEYS, Toolbar } from "./Toolbar";
 import { TopBar } from "./TopBar";
+import { useAccount } from "../AccountProvider";
+import { startAiUse } from "@/lib/billing/client";
+import { USE_NAME } from "@/lib/billing/config";
 
 type Interaction =
   | { kind: "pan"; startScreen: Point; startCam: Camera }
@@ -67,8 +70,10 @@ function loadUser(): UserInfo {
   return u;
 }
 
-async function postJson<T>(url: string, body: unknown): Promise<T> {
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+async function postJson<T>(url: string, body: unknown, token = ""): Promise<T> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error((json as { error?: string }).error ?? `Request failed (${res.status})`);
   return json as T;
@@ -88,6 +93,7 @@ export default function Whiteboard({ roomId }: { roomId: string }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [busy, setBusy] = useState<AiAction | null>(null);
   const [aiMode, setAiMode] = useState<"live" | "demo" | null>(null);
+  const acc = useAccount();
   const [preview, setPreview] = useState<{ html: string; mode: string } | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [spaceDown, setSpaceDown] = useState(false);
@@ -491,6 +497,14 @@ export default function Whiteboard({ roomId }: { roomId: string }) {
 
   const targets = () => (selected.length ? selected : board.all());
 
+  /** Each AI action uses one from the user's plan (or a free one); without one the demo engine answers. */
+  const aiBody = async (body: Record<string, unknown>): Promise<[Record<string, unknown>, string]> => {
+    const { sessionId, notice } = await startAiUse(acc);
+    if (notice) toast(notice, "warn");
+    else if (acc.billing && acc.ai && !acc.account) toast(`Sign in with Google for 3 free ${USE_NAME.many} by Claude`, "info");
+    return sessionId ? [{ ...body, session: sessionId }, await acc.token()] : [body, ""];
+  };
+
   const runTidy = async () => {
     const els = targets();
     if (!els.length) return toast("Draw some rough shapes first", "warn");
@@ -498,7 +512,7 @@ export default function Whiteboard({ roomId }: { roomId: string }) {
     try {
       const res = await postJson<{ elements: BoardElement[]; removedIds: string[]; summary: string; mode: string; warning?: string }>(
         "/api/ai/tidy",
-        { elements: els },
+        ...(await aiBody({ elements: els })),
       );
       board.checkpoint();
       board.replace(res.elements, res.removedIds);
@@ -519,10 +533,7 @@ export default function Whiteboard({ roomId }: { roomId: string }) {
     setBusy("sketch");
     try {
       const image = await elementsToPng(els, { scale: 1.5, maxSize: 1568, background: "#ffffff" }).catch(() => "");
-      const res = await postJson<{ html: string; mode: string; warning?: string }>("/api/ai/sketch", {
-        elements: els,
-        image,
-      });
+      const res = await postJson<{ html: string; mode: string; warning?: string }>("/api/ai/sketch", ...(await aiBody({ elements: els, image })));
       setPreview({ html: res.html, mode: res.mode });
       if (res.warning) toast(res.warning, "warn");
     } catch (err) {
@@ -535,7 +546,7 @@ export default function Whiteboard({ roomId }: { roomId: string }) {
   const runBrainstorm = async (prompt: string) => {
     setBusy("brainstorm");
     try {
-      const res = await postJson<{ ideas: Idea[]; mode: string; warning?: string }>("/api/ai/brainstorm", { prompt, count: 8 });
+      const res = await postJson<{ ideas: Idea[]; mode: string; warning?: string }>("/api/ai/brainstorm", ...(await aiBody({ prompt, count: 8 })));
       const groups = new Set(res.ideas.map((i) => i.group)).size;
       // Put new notes below existing content so nothing gets covered; otherwise centre them.
       const existing = unionBounds(board.all());

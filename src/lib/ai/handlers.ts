@@ -16,7 +16,7 @@ function readElements(raw: unknown): BoardElement[] {
 
 /* ---------------------------------- Brainstorm --------------------------------- */
 
-export async function brainstorm(body: { prompt?: unknown; count?: unknown }) {
+export async function brainstorm(body: { prompt?: unknown; count?: unknown }, allowAi = isLive()) {
   const prompt = String(body.prompt ?? "").slice(0, 400).trim();
   if (!prompt) return { status: 400, json: { error: "Prompt is required" } };
   const count = Math.min(16, Math.max(3, Number(body.count) || 8));
@@ -24,7 +24,7 @@ export async function brainstorm(body: { prompt?: unknown; count?: unknown }) {
   let ideas: Idea[] = [];
   let mode: AiMode = "demo";
   let warning: string | undefined;
-  if (isLive()) {
+  if (allowAi) {
     try {
       const out = await askClaudeJson<{ ideas: Idea[] }>({
         system:
@@ -66,7 +66,7 @@ interface ClaudeTidy {
   shapes: { id: string; x: number; y: number; w: number; h: number; label: string }[];
 }
 
-export async function tidy(body: { elements?: unknown }) {
+export async function tidy(body: { elements?: unknown }, allowAi = isLive()) {
   const elements = readElements(body.elements);
   if (!elements.length) return { status: 400, json: { error: "Nothing to tidy" } };
 
@@ -75,7 +75,7 @@ export async function tidy(body: { elements?: unknown }) {
   let mode: AiMode = "demo";
   let warning: string | undefined;
 
-  if (isLive()) {
+  if (allowAi) {
     try {
       const boxes = result.elements.filter((e) => ["rect", "ellipse", "diamond", "sticky"].includes(e.type));
       if (boxes.length >= 2) {
@@ -141,7 +141,7 @@ export async function tidy(body: { elements?: unknown }) {
 
 /* -------------------------------- Sketch → UI -------------------------------- */
 
-export async function sketchToUi(body: { elements?: unknown; image?: unknown }) {
+export async function sketchToUi(body: { elements?: unknown; image?: unknown }, allowAi = isLive()) {
   const elements = readElements(body.elements);
   if (!elements.length) return { status: 400, json: { error: "Select some shapes first" } };
   const image = typeof body.image === "string" ? body.image.replace(/^data:image\/png;base64,/, "") : "";
@@ -149,7 +149,7 @@ export async function sketchToUi(body: { elements?: unknown; image?: unknown }) 
   let html = "";
   let mode: AiMode = "demo";
   let warning: string | undefined;
-  if (isLive() && image && image.length < 6_000_000) {
+  if (allowAi && image && image.length < 6_000_000) {
     try {
       const out = await askClaudeJson<{ html: string }>({
         system:

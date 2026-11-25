@@ -1,4 +1,5 @@
 import { tidy } from "@/lib/ai/handlers";
+import { aiGate } from "@/lib/billing/gate";
 
 export async function POST(req: Request) {
   let body: Record<string, unknown> = {};
@@ -7,6 +8,7 @@ export async function POST(req: Request) {
   } catch {
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
-  const { status, json } = await tidy(body);
+  // Claude only for a signed-in user with an open AI session (free uses or a paid plan).
+  const { status, json } = await tidy(body, await aiGate(req, body));
   return Response.json(json, { status });
 }

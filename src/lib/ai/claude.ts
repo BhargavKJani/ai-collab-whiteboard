@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-export const MODEL = "claude-sonnet-5-5";
+// Haiku 5.5 keeps an AI action's cost under ₹1, which makes the ₹9 / ₹99 plans profitable.
+export const MODEL = "claude-haiku-5-5";
 
 /** Live mode only when a real-looking key is configured; otherwise the app runs in demo mode. */
 export function isLive() {

@@ -1,5 +1,7 @@
 "use client";
 
+import { useAccount } from "../AccountProvider";
+import { BillingPricing } from "../BillingPricing";
 import { Check, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { StartBoardButton } from "./StartBoardButton";
@@ -37,6 +39,9 @@ export const PLANS = {
 
 export function Pricing() {
   const [annual, setAnnual] = useState(true);
+  const { billing } = useAccount();
+  // Real UPI plans when Razorpay + Supabase are configured; otherwise the original preview plans.
+  if (billing) return <BillingPricing compact />;
   return (
     <div>
       <div className="mb-10 flex justify-center">
